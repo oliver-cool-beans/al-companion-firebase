@@ -1,18 +1,19 @@
 {
   "rules": {
-    "keys": {
-      "$owner": {
-        "auth":{
-          ".read": false,
-          ".write": false
-        }, 
+    "users": {
+    	"$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
         "$other": { ".validate": false }
       }
-    }, 
+    },
     "characters": {
       "$character":{
-        ".read": true, 
-        ".write": true,
+        ".read": "auth != null && (data.child('uid').val() === auth.uid || data.child('isPublic').val() === true)", 
+        ".write": "auth != null && (!data.exists() || data.child('uid').val() === auth.uid)",
+        "uid": { ".validate": "newData.val() === auth.uid"},
+        "updatedAt": { ".validate": true },
+        "isPublic": { ".validate": "newData.isBoolean()" },
         "data":{
           "acx": { ".validate": true },
           "age": { ".validate": "newData.isNumber()"}, 
@@ -37,7 +38,7 @@
           "evasion": { ".validate": "newData.isNumber()"}, 
           "explosion": { ".validate": "newData.isNumber()"}, 
           "fear": { ".validate": "newData.isNumber()"}, 
-          "fireresisance": { ".validate": "newData.isNumber()"}, 
+          "fireresistance": { ".validate": "newData.isNumber()"}, 
           "for": { ".validate": "newData.isNumber()"}, 
           "fx": { ".validate": true}, 
           "fzresistance": { ".validate": "newData.isNumber()"}, 
@@ -70,7 +71,7 @@
           "real_y": { ".validate": "newData.isNumber()"}, 
           "reflection": { ".validate": "newData.isNumber()"}, 
           "rpiercing": { ".validate": "newData.isNumber()"}, 
-          "stand": { ".validate": "newData.isBoolean()"}, 
+          "stand": { ".validate": "newData.val() === 'stand0' || newData.val() === 'cstand' || newData.isBoolean()"}, 
           "str": { ".validate": "newData.isNumber()"}, 
           "stun": { ".validate": "newData.isNumber()"}, 
           "stype": { ".validate": "newData.isString()"}, 
@@ -80,8 +81,8 @@
           "xcx": { ".validate": true}, 
           "xpm": { ".validate": "newData.isNumber()"}, 
           "xrange": { ".validate": "newData.isNumber()"}, 
-          "afk": { ".validate": "newData.val() === 'code' || newData.val() === 'afk'"},
-          "angle": { ".validate": "newData.isNumber()"}, 
+          "afk": { ".validate": " newData.isBoolean() || newData.val() === 'code' || newData.val() === 'afk'"},
+          "angle": { ".validate": "newData.isNumber() || newData.val() === null"}, 
           "c": { ".validate": true}, 
           "cid": { ".validate": "newData.isNumber()"}, 
           "controller": { ".validate": "newData.isString()"}, 
@@ -110,8 +111,16 @@
           "x": { ".validate": "newData.isNumber()"}, 
           "y": { ".validate": "newData.isNumber()"}, 
           "xp": { ".validate": "newData.isNumber()"}, 
+          "cash": { ".validate": "newData.isNumber()"},
+          "critdamage": { ".validate": "newData.isNumber()"}, 
+          "going_x": { ".validate": "newData.isNumber()"}, 
+          "going_y": { ".validate": "newData.isNumber()"}, 
+          "move_num": { ".validate": "newData.isNumber()"}, 
+          "moving": { ".validate": "newData.isBoolean()"}, 
+          "type": { ".validate": "newData.val() === 'mage' || newData.val()  === 'priest' || newData.val() === 'rogue' || newData.val()  === 'paladin' || newData.val()  === 'merchant' || newData.val()  === 'warrior' || newData.val()  === 'ranger'"},
           "$other": { ".validate": false }
-        }
+        },
+        "$other": { ".validate": false }
       }
     }
   }
